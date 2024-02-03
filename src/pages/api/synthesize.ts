@@ -17,12 +17,20 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { sentence } = req.body;
-      const [response] = await client.synthesizeSpeech({
-        input: { text: sentence },
-        voice: { languageCode: "en-US", ssmlGender: "NEUTRAL" },
-        audioConfig: { audioEncoding: "MP3" },
-      });
+      const { text, ssml, useSSML = false } = req.body;
+
+      const [response] = useSSML
+        ? await client.synthesizeSpeech({
+            input: { ssml },
+            voice: { languageCode: "en-US", ssmlGender: "NEUTRAL" },
+            audioConfig: { audioEncoding: "MP3" },
+          })
+        : await client.synthesizeSpeech({
+            input: { text },
+            voice: { languageCode: "en-US", ssmlGender: "NEUTRAL" },
+            audioConfig: { audioEncoding: "MP3" },
+          });
+
       if (!response.audioContent) throw Error("No audio content");
       const audioBlob = await response.audioContent;
       res.setHeader("Content-Type", "audio/mpeg");
