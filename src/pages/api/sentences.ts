@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const sentences = [
-  "As he dangled from the rope deep inside the crevasse.",
+  "$41.02 As he dangled from the rope deep inside the crevasse.",
   "He had reached the point where he was paranoid about being paranoid.",
   "Instead of a bachelorette party.",
   "The sunblock was handed to the girl before practice, but the burned skin was proof she did not apply it.",
@@ -21,7 +21,7 @@ export default async function handler(
       query: { page },
     } = req;
 
-    const parsedPage = page ? Number(page) : 1;
+    const parsedPage = (page ? Number(page) : 1) - 1;
     const outputSentence = sentences[parsedPage % sentences.length];
     res.send({ sentence: outputSentence });
   } else {
