@@ -11,20 +11,12 @@ export default function Home() {
 
 Please feel free to type in any sentence.`);
 
-  const handleClickPlay = async () => {
-    handlePlay(inputText);
-  };
-
-  const handleClickPause = async () => {
-    handlePause();
-  };
-
   return (
     <>
       <Button
         className="mb-4"
         disabled={inputText.length === 0 || isLoading}
-        onClick={isPlaying ? handleClickPause : handleClickPlay}
+        onClick={isPlaying ? handlePause : () => handlePlay(inputText)}
       >
         {isLoading ? <Spinner /> : isPlaying ? "Pause" : "Play"}
       </Button>
