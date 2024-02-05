@@ -12,6 +12,11 @@ export default function useSpeechEngine() {
     speechMarks: SpeechMarks;
   }>();
 
+  const handleClickPlayPause = (inputText: string) => {
+    if (isPlaying) handlePause();
+    else handlePlay(inputText);
+  };
+
   const handlePlay = async (inputText: string) => {
     if (text === inputText) {
       setIsPlaying(true);
@@ -41,10 +46,9 @@ export default function useSpeechEngine() {
 
   return {
     isLoading,
-    setIsLoading,
     isPlaying,
-    generatedAudio,
     handlePlay,
     handlePause,
+    handleClickPlayPause,
   };
 }

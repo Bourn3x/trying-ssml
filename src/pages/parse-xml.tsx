@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "@/components/Button";
 import Spinner from "@/components/Spinner";
 import useXmlPlayer from "@/hooks/useXmlPlaywer";
+import useSpeechEngine from "@/hooks/useSpeechEngine";
 
 export default function Page() {
   const [isDisplayPretty, setisDisplayPretty] = useState(false);
@@ -12,11 +13,21 @@ export default function Page() {
     xmlData,
 
     prettifiedXml,
-    getPrettifiedXml,
 
     xmlTextValues,
     getXmlTextValues,
   } = useXmlPlayer();
+
+  const {
+    isLoading: isLoadingAudio,
+    isPlaying,
+    handleClickPlayPause,
+  } = useSpeechEngine();
+
+  const handleClickPlayPauseButton = () => {
+    if (!xmlTextValues) return;
+    handleClickPlayPause(xmlTextValues);
+  };
 
   return (
     <>
@@ -58,7 +69,16 @@ export default function Page() {
           )}
         </div>
 
-        {xmlData && <p>{xmlTextValues}</p>}
+        {xmlTextValues && (
+          <>
+            <div className="border-b border-gray-400">
+              <p>{xmlTextValues}</p>
+              <Button onClick={handleClickPlayPauseButton}>
+                {isLoadingAudio ? <Spinner /> : isPlaying ? "Pause" : "Play"}
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

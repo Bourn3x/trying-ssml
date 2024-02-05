@@ -57,7 +57,6 @@ export default function useXmlPlaywer() {
     printNodes,
 
     prettifiedXml,
-    getPrettifiedXml,
 
     xmlTextValues,
     getXmlTextValues,
