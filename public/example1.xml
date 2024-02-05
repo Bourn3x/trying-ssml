@@ -1,0 +1,18 @@
+<speak version="1.1"
+       xmlns="http://www.w3.org/2001/10/synthesis"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.w3.org/2001/10/synthesis
+                 http://www.w3.org/TR/speech-synthesis11/synthesis.xsd"
+       xml:lang="en-US">
+
+    asdd
+   <s>I am speaking this at the default volume for this voice.</s>
+
+   <s><prosody volume="+6dB">
+       I am speaking this at approximately twice the original signal amplitude.
+   </prosody></s>
+
+   <s><prosody volume="-6dB">
+       I am speaking this at approximately half the original signal amplitude.
+   </prosody></s>
+</speak>

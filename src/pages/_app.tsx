@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 const LINKS = [
   { href: "/", name: "Testing Google TTS" },
   { href: "/tts", name: "Text-to-speech" },
+  { href: "/parse-xml", name: "Parse XML" },
 ];
 
 export default function App({ Component, pageProps }: AppProps) {
