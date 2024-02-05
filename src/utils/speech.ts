@@ -81,7 +81,9 @@ export const getPrettifiedXmlAux = (
       // Print attributes
       for (let i = 0; i < node.attributes.length; i++) {
         const attribute = node.attributes[i];
-        output += `${indent}${INDENT_SPACING}@${attribute.name}="${attribute.value}"\n`;
+        output += `${indent}${INDENT_SPACING}@${
+          attribute.name
+        }="${attribute.value.replaceAll(/\s+/g, " ")}"\n`;
       }
       output += `${indent}>\n`;
     } else {

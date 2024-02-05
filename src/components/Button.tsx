@@ -8,7 +8,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export default function Button({ children, className, ...buttonProps }: Props) {
   return (
     <button
-      className={`py-2 px-8 rounded-full font-semibold mt-4 bg-blue-400 hover:bg-blue-500 duration-300 disabled:opacity-30 w-[210px] ${className}`}
+      className={`py-2 px-8 rounded-full font-semibold mt-4 bg-blue-400 hover:bg-blue-500 duration-300 disabled:opacity-30 disabled:cursor-not-allowed w-[210px] ${className}`}
       {...buttonProps}
     >
       {children}

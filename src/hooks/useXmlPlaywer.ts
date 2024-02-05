@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getXmlTextValuesAux,
   getPrettifiedXmlAux,
@@ -11,6 +11,11 @@ export default function useXmlPlaywer() {
   const [xmlDoc, setXmlDoc] = useState<Document>();
   const [prettifiedXml, setPrettifiedXml] = useState<string>();
   const [xmlTextValues, setXmlTextValues] = useState<string>();
+
+  useEffect(() => {
+    if (!xmlDoc) return;
+    getPrettifiedXml();
+  }, [xmlDoc]);
 
   const getXmlData = async () => {
     setIsLoading(true);

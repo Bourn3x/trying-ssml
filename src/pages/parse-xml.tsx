@@ -1,8 +1,10 @@
+import { useState } from "react";
 import Button from "@/components/Button";
 import Spinner from "@/components/Spinner";
 import useXmlPlayer from "@/hooks/useXmlPlaywer";
 
 export default function Page() {
+  const [isDisplayPretty, setisDisplayPretty] = useState(false);
   const {
     isLoading,
 
@@ -16,32 +18,47 @@ export default function Page() {
     getXmlTextValues,
   } = useXmlPlayer();
 
-  console.log(prettifiedXml);
-
   return (
     <>
-      <Button disabled={isLoading} onClick={getXmlData}>
+      <Button
+        disabled={isLoading}
+        onClick={getXmlData}
+        className="bg-violet-400 hover:bg-violet-500"
+      >
         {isLoading ? <Spinner /> : "Load content"}
       </Button>
       <div className="flex mb-4 gap-4">
-        <Button onClick={getPrettifiedXml}>Prettify Tree</Button>
-        <Button onClick={getXmlTextValues}>Get Text Values</Button>
+        <Button
+          onClick={() => setisDisplayPretty((prev) => !prev)}
+          disabled={!xmlData}
+        >
+          {isDisplayPretty ? "Show Original" : "Prettify Tree"}
+        </Button>
+        <Button onClick={getXmlTextValues} disabled={!xmlData}>
+          Get Text Values
+        </Button>
       </div>
 
-      <div className="grid grid-cols-2 [&>*]:p-4 border border-gray-400">
-        <div
-          className={`col-span-2 border-gray-400 ${xmlData ? "border-b" : ""}`}
-        >
-          {xmlData ? <div>{xmlData}</div> : "Click load content to load data"}
+      <div className="[&>*]:p-4 border border-gray-400 w-full max-w-3xl">
+        <div className={`border-gray-400 ${xmlData ? "border-b" : ""}`}>
+          {xmlData ? (
+            <>
+              {isDisplayPretty ? (
+                <pre className="text-sm whitespace-pre-line whitespace-pre-wrap">
+                  {prettifiedXml}
+                </pre>
+              ) : (
+                <pre className="text-sm">{xmlData}</pre>
+              )}
+            </>
+          ) : (
+            <p className="text-gray-500 italic">
+              Click load content to load data..
+            </p>
+          )}
         </div>
-        {xmlData && (
-          <>
-            <pre className="border-r border-gray-400 whitespace-pre-line whitespace-pre-wrap">
-              {prettifiedXml}
-            </pre>
-            <div className="">{xmlTextValues}</div>
-          </>
-        )}
+
+        {xmlData && <p>{xmlTextValues}</p>}
       </div>
     </>
   );
