@@ -127,7 +127,7 @@ export const getXmlTextValuesAux = (node: Node): string => {
         childNode.nodeValue?.trim() !== ""
       ) {
         // Text node with content
-        output = `${childNode.nodeValue?.trim()} `;
+        output += `${childNode.nodeValue?.trim()} `;
       }
     }
   }
