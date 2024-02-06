@@ -32,18 +32,18 @@ export default function useXmlPlaywer() {
 
   const printNodes = () => {
     if (!xmlDoc) return;
-    printNodesAux(xmlDoc.documentElement, "");
+    printNodesAux(xmlDoc.documentElement);
   };
 
   const getPrettifiedXml = () => {
     if (!xmlDoc) return;
-    const output = getPrettifiedXmlAux(xmlDoc.documentElement, "");
+    const output = getPrettifiedXmlAux(xmlDoc.documentElement);
     setPrettifiedXml(output);
   };
 
   const getXmlTextValues = () => {
     if (!xmlDoc) return;
-    const output = getXmlTextValuesAux(xmlDoc.documentElement, "");
+    const output = getXmlTextValuesAux(xmlDoc.documentElement);
     setXmlTextValues(output);
     return output;
   };

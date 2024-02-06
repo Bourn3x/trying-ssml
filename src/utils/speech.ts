@@ -111,10 +111,7 @@ export const getPrettifiedXmlAux = (
   return output;
 };
 
-export const getXmlTextValuesAux = (
-  node: Node,
-  indent: string = ""
-): string => {
+export const getXmlTextValuesAux = (node: Node): string => {
   let output = "";
 
   if (node instanceof Element) {
@@ -124,7 +121,7 @@ export const getXmlTextValuesAux = (
 
       if (childNode instanceof Element) {
         // Element node
-        output += getXmlTextValuesAux(childNode, `${indent}${INDENT_SPACING}`);
+        output += getXmlTextValuesAux(childNode);
       } else if (
         childNode instanceof Text &&
         childNode.nodeValue?.trim() !== ""
