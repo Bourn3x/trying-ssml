@@ -31,6 +31,7 @@ export default function useSpeechEngine() {
       src: [`data:audio/ogg;base64,${data.audioStream}`],
       format: ["ogg"],
       html5: true, // Force to HTML5 so that it works on most browsers
+      onend: () => setIsPlaying(false),
     });
     setGeneratedAudio({ howl: sound, speechMarks: data.speechMarks });
     sound.play();
