@@ -111,7 +111,7 @@ export const getPrettifiedXmlAux = (
   return output;
 };
 
-export const getXmlTextValuesAux = (node: Node): string => {
+export const getXmlTextValuesAuxOld = (node: Node): string => {
   let output = "";
 
   if (node instanceof Element) {
@@ -128,6 +128,34 @@ export const getXmlTextValuesAux = (node: Node): string => {
       ) {
         // Text node with content
         output += `${childNode.nodeValue?.trim()} `;
+      }
+    }
+  }
+
+  return output;
+};
+
+export const getXmlTextValuesAux = (node: Node) => {
+  let output = "";
+
+  if (node.nodeName === "audio") return output;
+
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    for (let i = 0; i < node.childNodes.length; i++) {
+      const childNode = node.childNodes[i];
+      const { nodeType, nodeValue } = childNode;
+
+      if (nodeType === Node.ELEMENT_NODE) {
+        output += getXmlTextValuesAux(childNode);
+      } else if (nodeType === Node.TEXT_NODE) {
+        const trimmedValue = nodeValue?.trim();
+        switch (trimmedValue) {
+          case ".":
+            output += nodeValue?.trim();
+            break;
+          default:
+            output += ` ${nodeValue?.trim()}`;
+        }
       }
     }
   }

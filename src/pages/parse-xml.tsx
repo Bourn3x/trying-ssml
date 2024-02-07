@@ -51,7 +51,7 @@ export default function Page() {
       </div>
 
       <div className="[&>*]:p-4 border border-gray-400 w-full max-w-3xl">
-        <div className={`border-gray-400 ${xmlData ? "border-b" : ""}`}>
+        <div>
           {xmlData ? (
             <>
               {isDisplayPretty ? (
@@ -71,7 +71,7 @@ export default function Page() {
 
         {xmlTextValues && (
           <>
-            <div className="border-b border-gray-400">
+            <div className="border-t border-gray-400">
               <p>{xmlTextValues}</p>
               <Button onClick={handleClickPlayPauseButton}>
                 {isLoadingAudio ? <Spinner /> : isPlaying ? "Pause" : "Play"}
