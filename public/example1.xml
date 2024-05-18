@@ -4,15 +4,19 @@
        xsi:schemaLocation="http://www.w3.org/2001/10/synthesis
                  http://www.w3.org/TR/speech-synthesis11/synthesis.xsd"
        xml:lang="en-US">
-
-    asdd
+    asdasdad
     <audio src="https://www.example.com/MY_MP3_FILE.mp3">didn't get your MP3 audio file</audio>.
    <s>This is the first sentence.</s>
-123
+
+    <audio src="https://www.example.com/MY_MP3_FILE.mp3">didn't get your MP3 audio file</audio>.
+    <audio src="https://www.example.com/MY_MP3_FILE.mp3">didn't get your MP3 audio file</audio>.
+    <audio src="https://www.example.com/MY_MP3_FILE.mp3">didn't get your MP3 audio file</audio>.
    <s><prosody volume="+6dB">
        Second Second Sentence.
    </prosody></s>
-asd
+    <audio src="https://www.example.com/MY_MP3_FILE.mp3">didn't get your MP3 audio file</audio>.
+    <audio src="https://www.example.com/MY_MP3_FILE.mp3">didn't get your MP3 audio file</audio>.
+
    <s><prosody volume="-6dB">
        Amplitude Third Sentence.
    </prosody></s>

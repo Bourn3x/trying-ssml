@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getXmlTextValuesAux,
   getPrettifiedXmlAux,
-  printNodesAux,
+  printNodesAuxNew,
 } from "@/utils/speech";
 
 export default function useXmlPlaywer() {
@@ -19,12 +19,12 @@ export default function useXmlPlaywer() {
 
   const getXmlData = async () => {
     setIsLoading(true);
-    const data = await fetch("/example1.xml");
-    const xmlData = await data.text();
-    setXmlData(xmlData);
+    const response = await fetch("/example1.xml");
+    const data = await response.text();
+    setXmlData(data);
 
     const domParser = new DOMParser();
-    const xmlDoc = domParser.parseFromString(xmlData, "text/xml");
+    const xmlDoc = domParser.parseFromString(data, "text/xml");
     setXmlDoc(xmlDoc);
 
     setIsLoading(false);
@@ -32,7 +32,8 @@ export default function useXmlPlaywer() {
 
   const printNodes = () => {
     if (!xmlDoc) return;
-    printNodesAux(xmlDoc.documentElement);
+    const output = printNodesAuxNew(xmlDoc.documentElement);
+    return output;
   };
 
   const getPrettifiedXml = () => {

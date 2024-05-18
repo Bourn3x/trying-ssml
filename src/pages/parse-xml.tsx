@@ -16,6 +16,8 @@ export default function Page() {
 
     xmlTextValues,
     getXmlTextValues,
+
+    printNodes,
   } = useXmlPlayer();
 
   const {
@@ -47,6 +49,9 @@ export default function Page() {
         </Button>
         <Button onClick={getXmlTextValues} disabled={!xmlData}>
           Get Text Values
+        </Button>
+        <Button onClick={printNodes} disabled={!xmlData}>
+          Print
         </Button>
       </div>
 

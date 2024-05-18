@@ -14,27 +14,27 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchSentenceAndSynthesize = () => {
+  const fetchSentenceAndSynthesize = async (page: number) => {
     setIsLoading(true);
-    fetch(`/api/sentences?page=${currentPage}`)
-      .then((res) => res.json())
-      .then((data) => handleSpeak(data.sentence))
-      .then((data) => {
-        setAudioTexts((prev) => [
-          ...prev,
-          {
-            audioURL: data.audioURL,
-            text: data.text,
-          },
-        ]);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
-    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/sentences?page=${page}`);
+      const data = await res.json();
+      const { audioURL, text } = await handleSpeak(data.sentence);
+      setAudioTexts((prev) => [
+        ...prev,
+        {
+          audioURL: audioURL,
+          text: text,
+        },
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
+    setIsLoading(false);
   };
 
   const handleClickLoad = () => {
-    fetchSentenceAndSynthesize();
+    fetchSentenceAndSynthesize(currentPage);
     setCurrentPage((prev) => prev + 1);
   };
 

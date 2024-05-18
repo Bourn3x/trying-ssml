@@ -34,7 +34,21 @@ export const generateAudioFiles = async (text: string) => {
 
 const INDENT_SPACING = "  ";
 
-export const printNodesAux = (node: Node, indent: string = ""): void => {
+type Output = {
+  outputString: string;
+  audioNodes: number;
+};
+
+export const printNodesAux = (node: Node, indent: string = ""): Output => {
+  let output: Output = {
+    outputString: "",
+    audioNodes: 0,
+  };
+
+  if (node.nodeName === "audio") {
+    output["audioNodes"] += 1;
+  }
+
   if (node instanceof Element) {
     if (node.attributes.length > 0) {
       console.log(`${indent}<${node.nodeName}`);
@@ -56,7 +70,12 @@ export const printNodesAux = (node: Node, indent: string = ""): void => {
 
       if (childNode instanceof Element) {
         // Element node
-        printNodesAux(childNode, `${indent}${INDENT_SPACING}`);
+        const childOutput = printNodesAux(
+          childNode,
+          `${indent}${INDENT_SPACING}`
+        );
+        output["audioNodes"] += childOutput["audioNodes"];
+        output["outputString"] += childOutput["outputString"];
       } else if (
         childNode instanceof Text &&
         childNode.nodeValue?.trim() !== ""
@@ -67,6 +86,69 @@ export const printNodesAux = (node: Node, indent: string = ""): void => {
     }
   }
   console.log(`${indent}</${node.nodeName}>`);
+  return output;
+};
+
+const addString = (output: Output, string: string) => {
+  const newOutput = Object.assign({}, output);
+  newOutput["outputString"] += string;
+  return newOutput;
+};
+
+export const printNodesAuxNew = (node: Node, indent: string = ""): Output => {
+  let output: Output = {
+    outputString: "",
+    audioNodes: 0,
+  };
+
+  if (node.nodeName === "audio") {
+    output["audioNodes"] += 1;
+  }
+
+  if (node instanceof Element) {
+    if (node.attributes.length > 0) {
+      output = addString(output, `${indent}<${node.nodeName}\n`);
+      // Print attributes
+      for (let i = 0; i < node.attributes.length; i++) {
+        const attribute = node.attributes[i];
+        output = addString(
+          output,
+          `${indent}${INDENT_SPACING}@${attribute.name}="${attribute.value}"\n`
+        );
+      }
+      output = addString(output, `${indent}>\n`);
+    } else {
+      output = addString(output, `${indent}<${node.nodeName}>\n`);
+    }
+
+    // Print child nodes
+    for (let i = 0; i < node.childNodes.length; i++) {
+      const childNode = node.childNodes[i];
+
+      if (childNode instanceof Element) {
+        // Element node
+        const childOutput = printNodesAuxNew(
+          childNode,
+          `${indent}${INDENT_SPACING}`
+        );
+        output["audioNodes"] += childOutput["audioNodes"];
+        output["outputString"] += childOutput["outputString"];
+      } else if (
+        childNode instanceof Text &&
+        childNode.nodeValue?.trim() !== ""
+      ) {
+        // Text node with content
+        output = addString(
+          output,
+          `${indent}${INDENT_SPACING}${childNode.nodeValue?.trim()}\n`
+        );
+      }
+    }
+  }
+
+  output = addString(output, `${indent}</${node.nodeName}>\n`);
+  console.log("output", output);
+  return output;
 };
 
 export const getPrettifiedXmlAux = (
@@ -81,9 +163,10 @@ export const getPrettifiedXmlAux = (
       // Print attributes
       for (let i = 0; i < node.attributes.length; i++) {
         const attribute = node.attributes[i];
+        const isLast = i === node.attributes.length - 1;
         output += `${indent}${INDENT_SPACING}@${
           attribute.name
-        }="${attribute.value.replaceAll(/\s+/g, " ")}"\n`;
+        }="${attribute.value.replaceAll(/\s+/g, " ")}"${isLast ? "" : "\n"}`;
       }
       output += `${indent}>\n`;
     } else {
@@ -140,7 +223,7 @@ export const getXmlTextValuesAux = (node: Node) => {
 
   if (node.nodeName === "audio") return output;
 
-  if (node.nodeType === Node.ELEMENT_NODE) {
+  if (node instanceof Element) {
     for (let i = 0; i < node.childNodes.length; i++) {
       const childNode = node.childNodes[i];
       const { nodeType, nodeValue } = childNode;
@@ -151,7 +234,6 @@ export const getXmlTextValuesAux = (node: Node) => {
         const trimmedValue = nodeValue?.trim();
         switch (trimmedValue) {
           case ".":
-            output += nodeValue?.trim();
             break;
           default:
             output += ` ${nodeValue?.trim()}`;
